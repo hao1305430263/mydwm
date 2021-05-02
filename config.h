@@ -29,6 +29,7 @@ static const Rule rules[] = {
     *   iWM_NAME(STRING) = title
     */
     /* class      instance    title       tags mask     isfloating   monitor */
+    { "Nightly", NULL, NULL, 1 << 2, 0, 0, 0, -1 },
 };
 
 /* layout(s) */
@@ -72,7 +73,7 @@ static const char* vol_mute[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "t
 static Key keys[] = {
     /* modifier                     key        function        argument */
     /* dmenucmd */
-    { MODKEY, XK_SPACE, spawn, { .v = dmenucmd } },
+    { MODKEY, XK_space, spawn, { .v = dmenucmd } },
 
     /* termcmd */
     { MODKEY | XK_Return, spawn, { .v = termcmd } },
