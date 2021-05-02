@@ -49,7 +49,8 @@ static const Layout layouts[] = {
 #define TAGKEYS(KEY, TAG)                                              \
     { MODKEY, KEY, view, { .ui = 1 << TAG } },                         \
         { MODKEY | ControlMask, KEY, toggleview, { .ui = 1 << TAG } }, \
-        { MODKEY | ShiftMask, KEY, tag, { .ui = 1 << TAG } }, // { MODKEY | ControlMask | ShiftMask, KEY, toggletag, { .ui = 1 << TAG } },
+        { MODKEY | ShiftMask, KEY, tag, { .ui = 1 << TAG } }, 
+/* { MODKEY | ControlMask | ShiftMask, KEY, toggletag, { .ui = 1 << TAG } }, */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                           \
@@ -76,7 +77,7 @@ static Key keys[] = {
     { MODKEY, XK_space, spawn, { .v = dmenucmd } },
 
     /* termcmd */
-    { MODKEY | XK_Return, spawn, { .v = termcmd } },
+    { MODKEY, XK_Return, spawn, { .v = termcmd } },
 
     /* google-chrome-stable */
     { MODKEY | ControlMask, XK_f, spawn, { .v = browser } },
