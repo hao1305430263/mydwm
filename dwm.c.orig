@@ -248,7 +248,6 @@ static void sigchld(int unused);
 static void spawn(const Arg* arg);
 static void tag(const Arg* arg);
 static void tagmon(const Arg* arg);
-static void tile(Monitor *);
 static void togglebar(const Arg* arg);
 static void togglefloating(const Arg* arg);
 static void toggletag(const Arg* arg);
@@ -1647,23 +1646,6 @@ void setlayout(const Arg* arg)
         drawbar(selmon);
 }
 
-/** void setcfact(const Arg* arg) */
-/** { */
-/**     float f; */
-/**     Client* c; */
-/**  */
-/**     c = selmon->sel; */
-/**  */
-/**     if (!arg || !c || !selmon->lt[selmon->sellt]->arrange) */
-/**         return; */
-/**     f = arg->f + c->cfact; */
-/**     if (arg->f == 0.0) */
-/**         f = 1.0; */
-/**     else if (f < 0.25 || f > 4.0) */
-/**         return; */
-/**     c->cfact = f; */
-/**     arrange(selmon); */
-/** } */
 
 void setcfact(const Arg* arg)
 {
@@ -1680,6 +1662,23 @@ void setcfact(const Arg* arg)
     else if (f < 0.25 || f > 4.0)
         return;
     c->cfact = f;
+    arrange(selmon);
+}
+
+
+
+
+/* arg > 1.0 will set mfact absolutely */
+void setmfact(const Arg* arg)
+{
+    float f;
+
+    if (!arg || !selmon->lt[selmon->sellt]->arrange)
+        return;
+    f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
+    if (f < 0.05 || f > 0.95)
+        return;
+    selmon->mfact = f;
     arrange(selmon);
 }
 
@@ -1837,41 +1836,6 @@ void tagmon(const Arg* arg)
     sendmon(selmon->sel, dirtomon(arg->i));
 }
 
-/** void tile(Monitor* m) */
-/** { */
-/**     unsigned int i, n, h, mw, my, ty; */
-/**     float mfacts = 0, sfacts = 0; */
-/**     Client* c; */
-/**  */
-/**     for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++) { */
-/**         if (n < m->nmaster) */
-/**             mfacts += c->cfact; */
-/**         else */
-/**             sfacts += c->cfact; */
-/**     } */
-/**  */
-/**     if (n == 0) */
-/**         return; */
-/**  */
-/**     if (n > m->nmaster) */
-/**         mw = m->nmaster ? m->ww * m->mfact : 0; */
-/**     else */
-/**         mw = m->ww; */
-/**     for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) */
-/**         if (i < m->nmaster) { */
-/**             h = (m->wh - my) * (c->cfact / mfacts); */
-/**             resize(c, m->wx, m->wy + my, mw - (2 * c->bw), h - (2 * c->bw), 0); */
-/**             if (my + HEIGHT(c) < m->wh) */
-/**                 my += HEIGHT(c); */
-/**             mfacts -= c->cfact; */
-/**         } else { */
-/**             h = (m->wh - ty) * (c->cfact / sfacts); */
-/**             resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2 * c->bw), h - (2 * c->bw), 0); */
-/**             if (ty + HEIGHT(c) < m->wh) */
-/**                 ty += HEIGHT(c); */
-/**             sfacts -= c->cfact; */
-/**         } */
-/** } */
 
 void togglebar(const Arg* arg)
 {
